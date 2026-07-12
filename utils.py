@@ -1,5 +1,22 @@
 from inventory import products
 
+def dashboard():
+    total_quantity = 0
+    total_inventory = 0
+    categories = set()
+    for product in products.values():
+        categories.add(product["category"])
+    for product in products.values():
+        total_quantity += product["quantity"]
+    for product in products.values():
+        total_inventory = product["quantity"] * product["selling_price"]
+    print("\nHello Visitor, this is the Summmary of my store.")
+    print("Total Categories:", len(categories))
+    print(f"Total Product: {total_quantity}")
+    print(f"Total Inventory cost: {total_inventory}")
+
+
+
 def see_product():
     for product in products.values():
         print(product["name"])
@@ -50,7 +67,3 @@ def search_item():
         see_product()
     if search == "2":
         see_category()
-
-search_item()
-
-
