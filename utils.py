@@ -30,18 +30,6 @@ def see_category():
         print(category)
 
 
-def admin_ctlr():
-    name = "Harsh Tiwari"
-    key = "12345678"
-
-    username = input("Enter Username: ")
-    password = input("Enter Password: ")
-    if username == name and password == key:
-        print("Congo")
-    elif username != name or password != key:
-        print("Please Enter right credentials.")
-
-
 def add_product():
     pass
 
