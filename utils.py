@@ -10,10 +10,12 @@ def dashboard():
         total_quantity += product["quantity"]
     for product in products.values():
         total_inventory = product["quantity"] * product["selling_price"]
+    print("-"*52)
     print("\nHello Visitor, this is the Summmary of my store.")
     print("Total Categories:", len(categories))
     print(f"Total Product: {total_quantity}")
     print(f"Total Inventory cost: {total_inventory}")
+    print("-"*52)
 
 
 
@@ -79,15 +81,7 @@ def view_by_name():
         if not found:
             print("No product found")
 
-
-
-def buy_product():
-    input("\n Buy via entering name of product or searching product?(y, yes/n, no) ")
-    if input == "y" or "yes":
-        search_item()
-
     
-
 def search_item():
     print("\n Search Items by")
     print("0. Entering name")
