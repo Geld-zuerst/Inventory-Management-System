@@ -33,6 +33,7 @@ def admin_ctlr():
     key = "12345678"
 
     while True:
+        print("Name = Harsh Tiwari, key = 12345678")
         username = input("Enter Username: ")
         password = input("Enter Password: ")
         if username == Name and password == key:
