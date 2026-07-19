@@ -2,11 +2,11 @@ from inventory import products
 
 def add_product():
     print("======== Add a new product ========")
-    name = input("Enter name of the product: ")
-    category = input("Enter category of the product: ")
-    brand = input("Enter the Brand name: ")
-    selling_price = input("Enter the Selling Price of the product: ")
-    quantity = input("Enter the Quantity of product: ")
+    name = input("Enter name of the product: ").title()
+    category = input("Enter category of the product: ").title()
+    brand = input("Enter the Brand name: ").title()
+    selling_price = int(input("Enter the Selling Price of the product: "))
+    quantity = int(input("Enter the Quantity of product: "))
 
     products = {
         "Name" : name,
