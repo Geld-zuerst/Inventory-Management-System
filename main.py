@@ -25,7 +25,11 @@ while True:
     elif choice == "5":
         search_item()
     elif choice == "0":
+        print()
+        print("-"*55)
         print("Thanks for visiting My Store, Hope u'll come again.")
+        print("-"*55)
+        print()
         break
     else:
         print("Please enter a valid number")

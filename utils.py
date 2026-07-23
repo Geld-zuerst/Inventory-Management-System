@@ -39,7 +39,7 @@ def see_category():
     for product in products.values():
         categories.add(product["category"])
     for category in categories:
-        print(category)
+        print(category,end=())
 
 
 def view_by_category():

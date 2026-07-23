@@ -29,28 +29,32 @@ def buy_product():
                     print(f"Available  : {product['quantity']}")
                     print("-"*35)
                     amount = input("\nEnter quantity to buy: ")
-                    print()
-                    print("-"*35)
-                    print("Order Summary")
-                    print("-"*35)
-                    print(f"Product      : {product['name']}")
-                    print(f"Unit Price   : {product['selling_price']}")
-                    print(f"Quantity     : {amount}")
-                    print(f"Total amount : {product['selling_price'] * int(amount)}")
-                    print("-"*35)
-                    confirmation = input("\nConfirm Purchase?(Y/N) ").title()
-                    print()
-                    print("\n✅ Purchase Successful!")
-                    print()
+                    if int(amount) <= product['quantity']:
+                        print()
+                        print("-"*35)
+                        print("Order Summary")
+                        print("-"*35)
+                        print(f"Product      : {product['name']}")
+                        print(f"Unit Price   : {product['selling_price']}")
+                        print(f"Quantity     : {amount}")
+                        print(f"Total amount : {product['selling_price'] * int(amount)}")
+                        print("-"*35)
+                        confirmation = input("\nConfirm Purchase?(Y/N) ").title()
+                        print()
+                        if confirmation == "Y":
+                            print("\n✅ Purchase Successful!")
+                            print()
+                        elif confirmation == "N":
+                            print("\n❌ Purchase Failed!")
+                            print()
+                    else:
+                        print(f"\nOnly {product['quantity']} is available")
+                        print("\n❌ Purchase Failed!")
+                        print()
             if not found:
-                print("No product found")
+                print("❌ No product found")
 
-
-        
-
-
-
-        if input1 == 2:
+        elif input1 == 2:
             input3 = input("\nEnter product Name: ").title()
             found = False
 
@@ -66,21 +70,31 @@ def buy_product():
                     print(f"Price      : {product['selling_price']}")
                     print(f"Available  : {product['quantity']}")
                     print("-"*35)
-                    amount = input("\nEnter quantity to buy: ")
-                    print()
-                    print("-"*35)
-                    print("Order Summary")
-                    print("-"*35)
-                    print(f"Product      : {product['name']}")
-                    print(f"Unit Price   : {product['selling_price']}")
-                    print(f"Quantity     : {amount}")
-                    print(f"Total amount : {product['selling_price'] * int(amount)}")
-                    print("-"*35)
-                    confirmation = input("\nConfirm Purchase?(Y/N) ").title()
-                    print()
-                    print("\n✅ Purchase Successful!")
-                    print()
-                if not found:
-                    print("No product found")
-        if input == 3:
+                    amount = int(input("\nEnter quantity to buy: "))
+                    if amount <= product['quantity']:
+                        print()
+                        print("-"*35)
+                        print("Order Summary")
+                        print("-"*35)
+                        print(f"Product      : {product['name']}")
+                        print(f"Unit Price   : {product['selling_price']}")
+                        print(f"Quantity     : {amount}")
+                        print(f"Total amount : {product['selling_price'] * amount}")
+                        print("-"*35)
+                        confirmation = input("\nConfirm Purchase?(Y/N) ").title()
+                        if confirmation == "Y":
+                            print("\n✅ Purchase Successful!")
+                            print()
+                        elif confirmation == "N":
+                            print("\n❌ Purchase Failed!")
+                            print()
+                    else:
+                        print(f"\nOnly {product['quantity']} is available")
+                        print("\n❌ Purchase Failed!")
+                        print()
+            if not found:
+                print("❌ No product found")
+        elif input1 == 3:
             break
+        else:
+            print("Enter a valid input")
