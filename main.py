@@ -1,6 +1,7 @@
-from utils import search_item,dashboard
+from utils import search_item,dashboard,stock_management
 from admin_control import admin_ctlr
 from buy_product import buy_product
+
 
 while True:
     print("\n========== Inventory Management System ==========")
@@ -19,7 +20,7 @@ while True:
     elif choice == "2":
         admin_ctlr()
     elif choice == "3":
-        pass
+        stock_management()
     elif choice == "4":
         buy_product()
     elif choice == "5":
