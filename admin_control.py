@@ -1,63 +1,131 @@
 from inventory import products
 
+
+def _read_integer(prompt, minimum=0):
+    while True:
+        try:
+            value = int(input(prompt))
+        except ValueError:
+            print("Please enter a valid whole number.")
+            continue
+
+        if value < minimum:
+            print(f"Please enter a number greater than or equal to {minimum}.")
+            continue
+        return value
+
+
+def _next_product_id():
+    existing_numbers = (
+        int(product_id[1:])
+        for product_id in products
+        if product_id.startswith("P") and product_id[1:].isdigit()
+    )
+    return f"P{max(existing_numbers, default=0) + 1:03d}"
+
+
 def add_product():
-    print("======== Add a new product ========")
-    name = input("Enter name of the product: ").title()
-    category = input("Enter category of the product: ").title()
-    brand = input("Enter the Brand name: ").title()
-    selling_price = int(input("Enter the Selling Price of the product: "))
-    quantity = int(input("Enter the Quantity of product: "))
+    print("\n" + "=" * 35)
+    print("           Add Product")
+    print("=" * 35)
 
-    products = {
-        "Name" : name,
-        "Category" : category,
-        "Brand" : brand,
-        "Selling_price" : selling_price,
-        "quantity" : quantity
+    name = input("Product name: ").strip().title()
+    category = input("Category: ").strip().title()
+    brand = input("Brand: ").strip().title()
+    if not name or not category or not brand:
+        print("Name, category, and brand cannot be empty.")
+        return
+
+    buying_price = _read_integer("Buying price: ")
+    selling_price = _read_integer("Selling price: ")
+    quantity = _read_integer("Quantity: ")
+    product_id = _next_product_id()
+
+    products[product_id] = {
+        "name": name,
+        "category": category,
+        "brand": brand,
+        "buying_price": buying_price,
+        "selling_price": selling_price,
+        "quantity": quantity,
     }
-
-    for product in products.values():
-        print(product["name"])
+    print(f"\nProduct added successfully with ID {product_id}.")
 
 
 def delete_product():
-    pass
+    product_id = input("Enter product ID to delete: ").strip().upper()
+    if product_id not in products:
+        print("Product ID not found.")
+        return
+
+    deleted_product = products.pop(product_id)
+    print(f"{deleted_product['name']} ({product_id}) deleted successfully.")
+
+
+def _read_optional_integer(label, current_value):
+    while True:
+        value = input(f"{label} [{current_value}]: ").strip()
+        if not value:
+            return current_value
+        try:
+            parsed_value = int(value)
+        except ValueError:
+            print("Please enter a valid whole number or leave it blank.")
+            continue
+        if parsed_value < 0:
+            print("Please enter a non-negative number.")
+            continue
+        return parsed_value
 
 
 def edit_product():
-    pass
+    product_id = input("Enter product ID to edit: ").strip().upper()
+    product = products.get(product_id)
+    if product is None:
+        print("Product ID not found.")
+        return
+
+    print("Leave a field blank to keep its current value.")
+    for field in ("name", "category", "brand"):
+        value = input(f"{field.replace('_', ' ').title()} [{product[field]}]: ").strip()
+        if value:
+            product[field] = value.title()
+
+    for field in ("buying_price", "selling_price", "quantity"):
+        product[field] = _read_optional_integer(
+            field.replace("_", " ").title(), product[field]
+        )
+    print(f"\nProduct {product_id} updated successfully.")
 
 
 def admin_ctlr():
-    Name = "Harsh Tiwari"
-    key = "12345678"
+    username_required = "Harsh Tiwari"
+    password_required = "12345678"
 
     while True:
-        print("Name = Harsh Tiwari, key = 12345678")
-        username = input("Enter Username: ")
-        password = input("Enter Password: ")
-        if username == Name and password == key:
-            print("")
-            print("~"*52)
-            print("Happy to see u Admin, Hope u'r doing good in real life.")
-            print("~"*52)
-            print("\n1. Add Product")
-            print("2. Delete Product")
-            print("3. Edit Product")
-            print("4. Back")
-            change = input("What u wanna change Admin? ")
-            if change == "1":
-                add_product()
-                break
-            if change == "2":
-                delete_product()
-                break
-            if change == "3":
-                edit_product()
-                break
-            if change == "4":
-                break
-            else:
-                print("Please enter a valid input")
-        elif username != Name or password != key:
-            print("Please Enter right credentials.")
+        username = input("Enter admin username: ").strip()
+        password = input("Enter admin password: ").strip()
+        if username == username_required and password == password_required:
+            break
+        print("Incorrect username or password. Please try again.")
+
+    while True:
+        print("\n" + "=" * 35)
+        print("             Admin Control")
+        print("=" * 35)
+        print("1. Add Product")
+        print("2. Delete Product")
+        print("3. Edit Product")
+        print("4. Back")
+        choice = input("Choose an option: ").strip()
+
+        if choice == "1":
+            add_product()
+        elif choice == "2":
+            delete_product()
+        elif choice == "3":
+            edit_product()
+        elif choice == "4":
+            break
+        else:
+            print("Please enter a valid menu number.")

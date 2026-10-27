@@ -1,100 +1,82 @@
 from inventory import products
 
+
+def _read_quantity():
+    while True:
+        try:
+            quantity = int(input("Enter quantity to buy: "))
+        except ValueError:
+            print("Please enter a valid whole number.")
+            continue
+        if quantity <= 0:
+            print("Quantity must be greater than zero.")
+            continue
+        return quantity
+
+
+def _purchase(product_id, product):
+    print("\n" + "-" * 35)
+    print("Product Found")
+    print("-" * 35)
+    print(f"Product ID : {product_id}")
+    print(f"Name       : {product['name']}")
+    print(f"Category   : {product['category']}")
+    print(f"Price      : ₹{product['selling_price']}")
+    print(f"Available  : {product['quantity']}")
+
+    quantity = _read_quantity()
+    if quantity > product["quantity"]:
+        print(f"Only {product['quantity']} available. Purchase failed.")
+        return
+
+    total = product["selling_price"] * quantity
+    print("\n" + "-" * 35)
+    print("Order Summary")
+    print("-" * 35)
+    print(f"Product      : {product['name']}")
+    print(f"Unit Price   : ₹{product['selling_price']}")
+    print(f"Quantity     : {quantity}")
+    print(f"Total amount : ₹{total}")
+    print("-" * 35)
+
+    confirmation = input("Confirm purchase? (Y/N): ").strip().casefold()
+    if confirmation == "y":
+        product["quantity"] -= quantity
+        print("\nPurchase successful. Stock has been updated.")
+    else:
+        print("\nPurchase cancelled.")
+
+
 def buy_product():
     while True:
-        print("="*35)
-        print("           Buy Product            ")
-        print("="*35)
-
-        print("\nSearch Product by: ")
-        print("1. Product ID")
-        print("2. Product Name")
+        print("\n" + "=" * 35)
+        print("           Buy Product")
+        print("=" * 35)
+        print("1. Search by Product ID")
+        print("2. Search by Product Name")
         print("3. Back")
-        input1 = int(input("Enter Choice: "))
+        choice = input("Enter choice: ").strip()
 
-        if input1 == 1:
-            input2 = input("Enter product ID (ex - Pxxx): ")
-            found = False
-
-            for product_id, product in products.items():
-                if product_id == input2:
-                    found = True
-                    print("-" * 35)
-                    print("Product Found")
-                    print("-" * 35)
-                    print(f"Product ID : {product_id}")
-                    print(f"Name       : {product['name']}")
-                    print(f"Category   : {product['category']}")
-                    print(f"Price      : {product['selling_price']}")
-                    print(f"Available  : {product['quantity']}")
-                    print("-"*35)
-                    amount = input("\nEnter quantity to buy: ")
-                    if int(amount) <= product['quantity']:
-                        print()
-                        print("-"*35)
-                        print("Order Summary")
-                        print("-"*35)
-                        print(f"Product      : {product['name']}")
-                        print(f"Unit Price   : {product['selling_price']}")
-                        print(f"Quantity     : {amount}")
-                        print(f"Total amount : {product['selling_price'] * int(amount)}")
-                        print("-"*35)
-                        confirmation = input("\nConfirm Purchase?(Y/N) ").title()
-                        print()
-                        if confirmation == "Y":
-                            print("\n✅ Purchase Successful!")
-                            print()
-                        elif confirmation == "N":
-                            print("\n❌ Purchase Failed!")
-                            print()
-                    else:
-                        print(f"\nOnly {product['quantity']} is available")
-                        print("\n❌ Purchase Failed!")
-                        print()
-            if not found:
-                print("❌ No product found")
-
-        elif input1 == 2:
-            input3 = input("\nEnter product Name: ").title()
-            found = False
-
-            for product_id, product in products.items():
-                if product["name"] == input3:
-                    found = True
-                    print("-" * 35)
-                    print("Product Found")
-                    print("-" * 35)
-                    print(f"Product ID : {product_id}")
-                    print(f"Name       : {product['name']}")
-                    print(f"Category   : {product['category']}")
-                    print(f"Price      : {product['selling_price']}")
-                    print(f"Available  : {product['quantity']}")
-                    print("-"*35)
-                    amount = int(input("\nEnter quantity to buy: "))
-                    if amount <= product['quantity']:
-                        print()
-                        print("-"*35)
-                        print("Order Summary")
-                        print("-"*35)
-                        print(f"Product      : {product['name']}")
-                        print(f"Unit Price   : {product['selling_price']}")
-                        print(f"Quantity     : {amount}")
-                        print(f"Total amount : {product['selling_price'] * amount}")
-                        print("-"*35)
-                        confirmation = input("\nConfirm Purchase?(Y/N) ").title()
-                        if confirmation == "Y":
-                            print("\n✅ Purchase Successful!")
-                            print()
-                        elif confirmation == "N":
-                            print("\n❌ Purchase Failed!")
-                            print()
-                    else:
-                        print(f"\nOnly {product['quantity']} is available")
-                        print("\n❌ Purchase Failed!")
-                        print()
-            if not found:
-                print("❌ No product found")
-        elif input1 == 3:
+        if choice == "1":
+            product_id = input("Enter product ID (e.g. P001): ").strip().upper()
+            product = products.get(product_id)
+            if product is None:
+                print("No product found.")
+            else:
+                _purchase(product_id, product)
+        elif choice == "2":
+            name = input("Enter product name: ").strip().casefold()
+            matches = [
+                (product_id, product)
+                for product_id, product in products.items()
+                if product["name"].casefold() == name
+            ]
+            if not matches:
+                print("No product found.")
+            else:
+                for product_id, product in matches:
+                    _purchase(product_id, product)
+        elif choice == "3":
             break
         else:
-            print("Enter a valid input")
+            print("Please enter a valid menu number.")
